@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Playbook — Precision Digital Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0d1f3c;
+    --blue: #1a4a8a;
+    --red: #c0392b;
+    --red-bright: #e74c3c;
+    --white: #ffffff;
+    --gray: #8a9ab5;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Barlow', sans-serif; background: var(--navy); color: var(--white); overflow-x: hidden; }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 48px; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(13,31,60,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 0.08em; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--red-bright); }
+  .nav-cta { font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); text-decoration: none; border: 1.5px solid rgba(255,255,255,0.3); padding: 9px 22px; border-radius: 3px; transition: all 0.25s ease; }
+  .nav-cta:hover { background: var(--red); border-color: var(--red); }
+  .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 48px 80px; overflow: hidden; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(26,74,138,0.25) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 20% 80%, rgba(192,57,43,0.12) 0%, transparent 60%), linear-gradient(165deg, #0d1f3c 0%, #0a1628 60%, #080f1e 100%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 420px; gap: 80px; align-items: center; }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red-bright); margin-bottom: 28px; opacity: 0; animation: fadeUp 0.7s ease 0.1s forwards; }
+  .hero-eyebrow::before { content: ''; width: 32px; height: 2px; background: var(--red-bright); }
+  .hero-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 7vw, 88px); line-height: 0.95; letter-spacing: 0.02em; color: var(--white); margin-bottom: 12px; opacity: 0; animation: fadeUp 0.7s ease 0.2s forwards; }
+  .hero-headline .accent { color: var(--red-bright); }
+  .hero-subhead { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: clamp(18px, 2.5vw, 26px); letter-spacing: 0.04em; color: rgba(255,255,255,0.65); line-height: 1.3; margin-bottom: 36px; opacity: 0; animation: fadeUp 0.7s ease 0.3s forwards; }
+  .hero-cities { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; opacity: 0; animation: fadeUp 0.7s ease 0.4s forwards; }
+  .city-tag { font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.06em; color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); padding: 7px 16px; border-radius: 2px; }
+  .city-tag.active { background: rgba(192,57,43,0.2); border-color: rgba(231,76,60,0.4); color: #ff8a80; }
+  .hero-proof { display: flex; gap: 36px; opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards; }
+  .proof-number { font-family: 'Bebas Neue', sans-serif; font-size: 38px; line-height: 1; color: var(--white); letter-spacing: 0.03em; }
+  .proof-number span { color: var(--red-bright); }
+  .proof-label { font-size: 12px; font-weight: 500; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+  .form-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 40px 36px; backdrop-filter: blur(20px); position: relative; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+  .form-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red), var(--red-bright)); border-radius: 6px 6px 0 0; }
+  .form-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(192,57,43,0.15); border: 1px solid rgba(231,76,60,0.3); border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #ff8a80; margin-bottom: 20px; }
+  .form-badge::before { content: ''; width: 7px; height: 7px; background: var(--red-bright); border-radius: 50%; animation: pulse 2s ease infinite; }
+  .form-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: 0.03em; line-height: 1.2; color: var(--white); margin-bottom: 8px; }
+  .form-subtitle { font-size: 14px; color: var(--gray); line-height: 1.5; margin-bottom: 28px; }
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
+  .form-input { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 14px 18px; font-family: 'Barlow', sans-serif; font-size: 15px; font-weight: 500; color: var(--white); transition: all 0.2s ease; outline: none; }
+  .form-input::placeholder { color: rgba(255,255,255,0.25); }
+  .form-input:focus { border-color: rgba(231,76,60,0.5); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(231,76,60,0.1); }
+  .form-select { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 14px 18px; font-family: 'Barlow', sans-serif; font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.6); outline: none; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+  .form-select option { background: var(--navy); color: var(--white); }
+  .form-select:focus { border-color: rgba(231,76,60,0.5); background-color: rgba(255,255,255,0.08); }
+  .submit-btn { width: 100%; background: var(--red); border: none; border-radius: 4px; padding: 17px 24px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 17px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); cursor: pointer; transition: all 0.25s ease; margin-top: 8px; }
+  .submit-btn:hover { background: var(--red-bright); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(231,76,60,0.35); }
+  .form-trust { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 12px; color: var(--gray); }
+  .form-trust svg { flex-shrink: 0; opacity: 0.6; }
+  .inside-section { position: relative; padding: 100px 48px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red-bright); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--red-bright); opacity: 0.5; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 5vw, 62px); line-height: 1; letter-spacing: 0.03em; color: var(--white); margin-bottom: 60px; }
+  .insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; }
+  .insight-card { background: rgba(13,31,60,0.8); padding: 36px 30px; position: relative; transition: background 0.3s ease; }
+  .insight-card:hover { background: rgba(22,45,84,0.9); }
+  .insight-number { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 1; color: rgba(255,255,255,0.06); position: absolute; top: 20px; right: 24px; }
+  .insight-icon { width: 44px; height: 44px; background: rgba(192,57,43,0.15); border: 1px solid rgba(231,76,60,0.25); border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 20px; }
+  .insight-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 0.04em; color: var(--white); margin-bottom: 12px; line-height: 1.2; text-transform: uppercase; }
+  .insight-desc { font-size: 14px; line-height: 1.6; color: var(--gray); }
+  .for-section { padding: 100px 48px; }
+  .for-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; max-width: 1200px; margin: 0 auto; }
+  .check-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.85); }
+  .check-item:last-child { border-bottom: none; }
+  .check-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; font-size: 11px; font-weight: 900; }
+  .check-icon.yes { background: rgba(39,174,96,0.2); color: #2ecc71; border: 1px solid rgba(39,174,96,0.3); }
+  .check-icon.no { background: rgba(192,57,43,0.15); color: var(--red-bright); border: 1px solid rgba(231,76,60,0.25); }
+  .urgency-band { background: var(--red); padding: 20px 48px; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .urgency-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--white); }
+  .urgency-dot { width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 50%; flex-shrink: 0; }
+  .bottom-cta { padding: 100px 48px; text-align: center; position: relative; overflow: hidden; }
+  .bottom-cta-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(26,74,138,0.2) 0%, transparent 70%); }
+  .bottom-cta-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+  .bottom-cta-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(44px, 6vw, 72px); line-height: 1; letter-spacing: 0.03em; color: var(--white); margin-bottom: 20px; }
+  .bottom-cta-title span { color: var(--red-bright); }
+  .bottom-cta-sub { font-size: 17px; line-height: 1.6; color: var(--gray); margin-bottom: 40px; }
+  .cta-btn-large { display: inline-flex; align-items: center; gap: 12px; background: var(--red); color: var(--white); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; padding: 20px 44px; border-radius: 4px; transition: all 0.25s ease; border: none; cursor: pointer; }
+  .cta-btn-large:hover { background: var(--red-bright); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(231,76,60,0.4); }
+  footer { padding: 40px 48px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: 0.08em; color: rgba(255,255,255,0.6); }
+  .footer-logo span { color: var(--red-bright); }
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a { font-size: 13px; color: var(--gray); text-decoration: none; transition: color 0.2s ease; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); width: 100%; text-align: center; margin-top: 8px; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.85); } }
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .hero { padding: 100px 24px 60px; }
+    .hero-content { grid-template-columns: 1fr; gap: 48px; }
+    .insights-grid { grid-template-columns: 1fr; }
+    .for-grid { grid-template-columns: 1fr; gap: 40px; }
+    .inside-section, .for-section, .bottom-cta { padding: 70px 24px; }
+    footer { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
+    .hero-proof { gap: 24px; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://precisiondigitalm.com" class="nav-logo">PRECISION <span>DIGITAL</span> MARKETING</a>
+  <a href="#get-guide" class="nav-cta">Get Free Guide</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Free Playbook — Limited Availability</div>
+      <h1 class="hero-headline">The Local<br>Business<br>Owner's<br><span class="accent">Playbook</span></h1>
+      <p class="hero-subhead">How businesses in Naperville, Schaumburg & Oak Brook are quietly dominating Google and Facebook — without wasting money on marketing.</p>
+      <div class="hero-cities">
+        <span class="city-tag active">📍 Schaumburg</span>
+        <span class="city-tag active">📍 Naperville</span>
+        <span class="city-tag active">📍 Oak Brook</span>
+        <span class="city-tag">Chicago Western Suburbs</span>
+      </div>
+      <div class="hero-proof">
+        <div class="proof-item">
+          <div class="proof-number">5<span>+</span></div>
+          <div class="proof-label">Insider Insights</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">3</div>
+          <div class="proof-label">Target Markets</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">100<span>%</span></div>
+          <div class="proof-label">Free — No Catch</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card" id="get-guide">
+      <div class="form-badge">Free Instant Download</div>
+      <h2 class="form-title">Get Your Free Copy Now</h2>
+      <p class="form-subtitle">Enter your details below and we'll send the full playbook straight to your inbox.</p>
+      <form id="playbook-form">
+        <div class="form-group">
+          <label class="form-label" for="name">Your Name</label>
+          <input class="form-input" type="text" id="name" placeholder="John Smith" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Business Email</label>
+          <input class="form-input" type="email" id="email" placeholder="john@yourbusiness.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="city">Your City</label>
+          <select class="form-select" id="city" required>
+            <option value="" disabled selected>Select your city</option>
+            <option value="Schaumburg">Schaumburg</option>
+            <option value="Naperville">Naperville</option>
+            <option value="Oak Brook">Oak Brook</option>
+            <option value="Other Chicago Suburb">Other Chicago Suburb</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="business">Type of Business</label>
+          <input class="form-input" type="text" id="business" placeholder="e.g. Plumbing, HVAC, Roofing..." required>
+        </div>
+        <button type="submit" class="submit-btn" id="submit-btn">Send Me The Free Playbook &#8594;</button>
+      </form>
+      <div class="form-trust" style="margin-top:16px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        100% free. No spam. Unsubscribe anytime.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="urgency-band">
+  <span class="urgency-text">Currently Accepting New Clients</span>
+  <span class="urgency-dot"></span>
+  <span class="urgency-text">Schaumburg · Naperville · Oak Brook</span>
+  <span class="urgency-dot"></span>
+  <span class="urgency-text">Limited Spots Available — March 2026</span>
+</div>
+
+<section class="inside-section">
+  <div class="section-inner">
+    <div class="section-label">What's Inside</div>
+    <h2 class="section-title">5 Insights Your Competitors<br>Don't Want You To Know</h2>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-number">01</div>
+        <div class="insight-icon">🗺️</div>
+        <div class="insight-title">The Google Maps Gold Rush</div>
+        <p class="insight-desc">Why 70% of local searches go to the top 3 map results — and exactly what's keeping you out of that list right now.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-number">02</div>
+        <div class="insight-icon">💸</div>
+        <div class="insight-title">Why Google Ads Fail in 30 Days</div>
+        <p class="insight-desc">The two critical setup mistakes that burn through ad budgets before the campaign has a chance to work.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-number">03</div>
+        <div class="insight-icon">📱</div>
+        <div class="insight-title">The Meta Ads Truth</div>
+        <p class="insight-desc">Why boosting posts is not advertising — and what the businesses quietly winning on Facebook are actually doing differently.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-number">04</div>
+        <div class="insight-icon">🔺</div>
+        <div class="insight-title">The Visibility Triangle</div>
+        <p class="insight-desc">How the top local businesses use Google Maps, Google Ads, and Meta Ads together to create a compounding advantage their competitors can't close.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-number">05</div>
+        <div class="insight-icon">⚡</div>
+        <div class="insight-title">The Follow-Up Problem</div>
+        <p class="insight-desc">The single operational fix that increases lead conversion by up to 8x — and why almost no local business is doing it.</p>
+      </div>
+      <div class="insight-card" style="background:rgba(192,57,43,0.08);border:1px solid rgba(231,76,60,0.15);">
+        <div class="insight-number">+</div>
+        <div class="insight-icon">🎯</div>
+        <div class="insight-title">Free Growth Audit Offer</div>
+        <p class="insight-desc">Every reader qualifies for a complimentary 20-minute Growth Audit — a genuine look at your specific business with zero obligation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="for-section">
+  <div class="for-grid">
+    <div>
+      <div class="section-label">Who This Is For</div>
+      <h2 class="section-title">This Guide Was Written For You If...</h2>
+      <div class="checklist">
+        <div class="check-item"><div class="check-icon yes">✓</div>You own a local business in Naperville, Schaumburg, Oak Brook or the surrounding suburbs</div>
+        <div class="check-item"><div class="check-icon yes">✓</div>You're spending money on marketing but aren't sure if it's actually working</div>
+        <div class="check-item"><div class="check-icon yes">✓</div>You've been burned by an agency that promised results and delivered excuses</div>
+        <div class="check-item"><div class="check-icon yes">✓</div>Your competitors seem to be getting more calls than you despite doing the same work</div>
+        <div class="check-item"><div class="check-icon yes">✓</div>You want to understand what's actually happening with your online visibility before spending another dollar</div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Who This Is NOT For</div>
+      <h2 class="section-title">Skip This If...</h2>
+      <div class="checklist">
+        <div class="check-item"><div class="check-icon no">✗</div>You're already dominating the top 3 on Google Maps for every service keyword in your area</div>
+        <div class="check-item"><div class="check-icon no">✗</div>You have more leads than you can handle and your phone never stops ringing</div>
+        <div class="check-item"><div class="check-icon no">✗</div>You're satisfied paying for marketing that produces no measurable results</div>
+        <div class="check-item"><div class="check-icon no">✗</div>You operate outside the Chicago western suburbs and surrounding area</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bottom-cta">
+  <div class="bottom-cta-bg"></div>
+  <div class="bottom-cta-content">
+    <div class="section-label" style="justify-content:center;">Free — No Obligation</div>
+    <h2 class="bottom-cta-title">Stop Guessing.<br><span>Start Growing.</span></h2>
+    <p class="bottom-cta-sub">Download the free playbook today and find out exactly what the top performing businesses in your market are doing that you aren't — and how to close that gap fast.</p>
+    <a href="#get-guide" class="cta-btn-large">Get The Free Playbook <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    <p style="margin-top:20px;font-size:13px;color:var(--gray);">Precision Digital Marketing · Schaumburg, IL · Precisiondigitalm.com</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">PRECISION <span>DIGITAL</span> MARKETING</div>
+  <div class="footer-links">
+    <a href="https://precisiondigitalm.com">Main Site</a>
+    <a href="https://precisiondigitalm.com/privacy">Privacy Policy</a>
+  </div>
+  <div class="footer-copy">© 2026 Precision Digital Marketing. All rights reserved. Schaumburg, Illinois.</div>
+</footer>
+
+<script>
+document.getElementById('playbook-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  var name = document.getElementById('name').value.trim();
+  var email = document.getElementById('email').value.trim();
+  var city = document.getElementById('city').value;
+  var business = document.getElementById('business').value.trim();
+  var btn = document.getElementById('submit-btn');
+
+  if (!name || !email || !city || !business) return;
+
+  btn.textContent = 'Sending...';
+  btn.style.background = '#1a4a8a';
+  btn.disabled = true;
+
+  var data = new FormData();
+  data.append('name', name);
+  data.append('email', email);
+  data.append('city', city);
+  data.append('business', business);
+
+  fetch('https://formspree.io/f/xpqyablw', {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(function(res) {
+    if (res.ok) {
+      window.location.href = 'https://trwcommercial-lgtm.github.io/Landingpage/thank-you.html';
+    } else {
+      throw new Error('failed');
+    }
+  })
+  .catch(function() {
+    btn.textContent = 'Send Me The Free Playbook \u2192';
+    btn.style.background = '#c0392b';
+    btn.disabled = false;
+  });
+});
+</script>
+</body>
+</html>
