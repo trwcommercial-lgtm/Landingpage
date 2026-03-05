@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're In — Precision Digital Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d1f3c;
+    --navy-mid: #162d54;
+    --blue: #1a4a8a;
+    --red: #c0392b;
+    --red-bright: #e74c3c;
+    --green: #27ae60;
+    --green-bright: #2ecc71;
+    --white: #ffffff;
+    --gray: #8a9ab5;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* GRID */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  }
+
+  /* NAV */
+  nav {
+    position: relative;
+    z-index: 10;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--red-bright); }
+
+  /* MAIN */
+  main {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+  }
+
+  .container {
+    max-width: 680px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* SUCCESS ICON */
+  .success-ring {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: rgba(39, 174, 96, 0.12);
+    border: 2px solid rgba(46, 204, 113, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+    opacity: 0;
+    animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+  }
+
+  .success-ring svg {
+    stroke: var(--green-bright);
+  }
+
+  /* EYEBROW */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green-bright);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.4s forwards;
+  }
+
+  .eyebrow::before, .eyebrow::after {
+    content: '';
+    width: 24px;
+    height: 1.5px;
+    background: var(--green-bright);
+    opacity: 0.5;
+  }
+
+  /* HEADLINE */
+  .headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 80px);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
+
+  .headline span { color: var(--green-bright); }
+
+  /* SUBTEXT */
+  .subtext {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--gray);
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.6s forwards;
+  }
+
+  .subtext strong { color: rgba(255,255,255,0.85); }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.7s forwards;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .divider span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    white-space: nowrap;
+  }
+
+  /* AUDIT CARD */
+  .audit-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 40px 36px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.8s forwards;
+  }
+
+  .audit-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), var(--red-bright));
+  }
+
+  .audit-card-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .audit-card-eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--red-bright);
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+
+  .audit-card h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 4vw, 40px);
+    letter-spacing: 0.03em;
+    color: var(--white);
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .audit-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--gray);
+    margin-bottom: 28px;
+  }
+
+  /* WHAT YOU GET LIST */
+  .audit-list {
+    text-align: left;
+    margin-bottom: 32px;
+  }
+
+  .audit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.5;
+  }
+
+  .audit-item:last-child { border-bottom: none; }
+
+  .audit-item-icon {
+    width: 20px;
+    height: 20px;
+    background: rgba(231, 76, 60, 0.15);
+    border: 1px solid rgba(231, 76, 60, 0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 10px;
+    color: var(--red-bright);
+    font-weight: 900;
+  }
+
+  /* CTA BUTTON */
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 20px 44px;
+    border-radius: 4px;
+    transition: all 0.25s ease;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cta-btn:hover {
+    background: var(--red-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(231, 76, 60, 0.35);
+  }
+
+  .cta-btn svg { transition: transform 0.2s ease; }
+  .cta-btn:hover svg { transform: translateX(4px); }
+
+  .cta-note {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 28px 48px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .footer-logo span { color: var(--red-bright); }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer-links a:hover { color: var(--white); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    nav { padding: 16px 20px; }
+    .audit-card { padding: 28px 20px; }
+    footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://precisiondigitalm.com" class="nav-logo">PRECISION <span>DIGITAL</span> MARKETING</a>
+</nav>
+
+<main>
+  <div class="container">
+
+    <!-- SUCCESS ICON -->
+    <div class="success-ring">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+
+    <!-- HEADLINE -->
+    <div class="eyebrow">Submission Confirmed</div>
+    <h1 class="headline">You're In.<br><span>Check Your Inbox.</span></h1>
+    <p class="subtext">
+      Your free copy of <strong>The Local Business Owner's Playbook</strong> is on its way to your inbox right now. 
+      Check your spam folder if you don't see it within a few minutes.
+      <br><br>
+      Expect a <strong>personal follow-up from us within 24 hours</strong> with one specific observation about your business and your local market.
+    </p>
+
+    <!-- DIVIDER -->
+    <div class="divider"><span>While You Wait — One More Thing</span></div>
+
+    <!-- AUDIT CARD -->
+    <div class="audit-card">
+      <div class="audit-card-eyebrow">Free — No Obligation</div>
+      <h2>Book Your Free 20-Minute Growth Audit</h2>
+      <p>Every reader of the playbook qualifies for a complimentary Growth Audit. We'll take a genuine look at your specific business, your Google Maps ranking, and your current ad performance — and tell you exactly what we'd do differently.</p>
+
+      <div class="audit-list">
+        <div class="audit-item">
+          <div class="audit-item-icon">✓</div>
+          We'll show you exactly where you rank on Google Maps right now for your top keywords
+        </div>
+        <div class="audit-item">
+          <div class="audit-item-icon">✓</div>
+          We'll identify the single biggest gap between you and your top competitor
+        </div>
+        <div class="audit-item">
+          <div class="audit-item-icon">✓</div>
+          You'll leave with a specific action plan — whether you work with us or not
+        </div>
+        <div class="audit-item">
+          <div class="audit-item-icon">✓</div>
+          20 minutes. No pitch. No pressure. Just honest insight.
+        </div>
+      </div>
+
+      <a href="https://calendly.com/trwcommercial/marketing-consultation" target="_blank" class="cta-btn">
+        Book My Free Growth Audit
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+      <p class="cta-note">Pick a time that works for you — slots fill up fast in March</p>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo">PRECISION <span>DIGITAL</span> MARKETING</div>
+  <div class="footer-links">
+    <a href="https://precisiondigitalm.com">Main Site</a>
+    <a href="https://precisiondigitalm.com/privacy">Privacy Policy</a>
+  </div>
+</footer>
+
+</body>
+</html>
